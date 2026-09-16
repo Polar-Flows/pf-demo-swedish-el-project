@@ -1,0 +1,207 @@
+{
+	"name": "pl_entseo_historical",
+	"properties": {
+		"activities": [
+			{
+				"name": "FE_Backfill",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.pBackfillList",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Get_ENTSOE_Data",
+							"type": "WebActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"method": "GET",
+								"headers": {
+									"Accept": "application/xml"
+								},
+								"url": {
+									"value": "https://web-api.tp.entsoe.eu/api?securityToken=d62beab7-0eb5-4da4-8854-40313af924aa&documentType=A44&in_Domain=@{item().Zone}&out_Domain=@{item().Zone}&periodStart=@{item().Start}&periodEnd=@{item().End}",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Save_To_Blob",
+							"type": "WebActivity",
+							"dependsOn": [
+								{
+									"activity": "Get_ENTSOE_Data",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"method": "PUT",
+								"headers": {
+									"x-ms-blob-type": "BlockBlob",
+									"Content-Type": "application/xml",
+									"x-ms-version": "2020-10-02"
+								},
+								"url": {
+									"value": "https://elswedenpriceproject.blob.core.windows.net/entsoe-raw/entsoe/day_ahead/@{item().Name}/@{item().Year}/@{item().Name}_@{item().Start}.xml",
+									"type": "Expression"
+								},
+								"body": {
+									"value": "@activity('Get_ENTSOE_Data').output",
+									"type": "Expression"
+								},
+								"authentication": {
+									"type": "MSI",
+									"resource": "https://storage.azure.com"
+								}
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"pBackfillList": {
+				"type": "array",
+				"defaultValue": [
+					{
+						"Zone": "10Y1001A1001A44P",
+						"Start": "202301010000",
+						"End": "202401010000",
+						"Year": "2023",
+						"Name": "SE1"
+					},
+					{
+						"Zone": "10Y1001A1001A44P",
+						"Start": "202401010000",
+						"End": "202501010000",
+						"Year": "2024",
+						"Name": "SE1"
+					},
+					{
+						"Zone": "10Y1001A1001A44P",
+						"Start": "202501010000",
+						"End": "202601010000",
+						"Year": "2025",
+						"Name": "SE1"
+					},
+					{
+						"Zone": "10Y1001A1001A44P",
+						"Start": "202601010000",
+						"End": "202609160000",
+						"Year": "2026",
+						"Name": "SE1"
+					},
+					{
+						"Zone": "10Y1001A1001A45N",
+						"Start": "202301010000",
+						"End": "202401010000",
+						"Year": "2023",
+						"Name": "SE2"
+					},
+					{
+						"Zone": "10Y1001A1001A45N",
+						"Start": "202401010000",
+						"End": "202501010000",
+						"Year": "2024",
+						"Name": "SE2"
+					},
+					{
+						"Zone": "10Y1001A1001A45N",
+						"Start": "202501010000",
+						"End": "202601010000",
+						"Year": "2025",
+						"Name": "SE2"
+					},
+					{
+						"Zone": "10Y1001A1001A45N",
+						"Start": "202601010000",
+						"End": "202609160000",
+						"Year": "2026",
+						"Name": "SE2"
+					},
+					{
+						"Zone": "10Y1001A1001A46L",
+						"Start": "202301010000",
+						"End": "202401010000",
+						"Year": "2023",
+						"Name": "SE3"
+					},
+					{
+						"Zone": "10Y1001A1001A46L",
+						"Start": "202401010000",
+						"End": "202501010000",
+						"Year": "2024",
+						"Name": "SE3"
+					},
+					{
+						"Zone": "10Y1001A1001A46L",
+						"Start": "202501010000",
+						"End": "202601010000",
+						"Year": "2025",
+						"Name": "SE3"
+					},
+					{
+						"Zone": "10Y1001A1001A46L",
+						"Start": "202601010000",
+						"End": "202609160000",
+						"Year": "2026",
+						"Name": "SE3"
+					},
+					{
+						"Zone": "10Y1001A1001A47J",
+						"Start": "202301010000",
+						"End": "202401010000",
+						"Year": "2023",
+						"Name": "SE4"
+					},
+					{
+						"Zone": "10Y1001A1001A47J",
+						"Start": "202401010000",
+						"End": "202501010000",
+						"Year": "2024",
+						"Name": "SE4"
+					},
+					{
+						"Zone": "10Y1001A1001A47J",
+						"Start": "202501010000",
+						"End": "202601010000",
+						"Year": "2025",
+						"Name": "SE4"
+					},
+					{
+						"Zone": "10Y1001A1001A47J",
+						"Start": "202601010000",
+						"End": "202609160000",
+						"Year": "2026",
+						"Name": "SE4"
+					}
+				]
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-09-16T16:12:03Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

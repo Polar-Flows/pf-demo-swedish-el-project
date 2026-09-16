@@ -1,0 +1,15 @@
+{
+	"name": "el-swede-price-project",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "swedencentral",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "a7140b6d-c51b-47e0-8eb1-621c7ec9b0f6",
+		"tenantId": "d236863a-f43f-4500-9e6d-8a195ae609f8"
+	}
+}

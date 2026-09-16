@@ -1,0 +1,111 @@
+{
+	"name": "pl_entseo_daily",
+	"properties": {
+		"activities": [
+			{
+				"name": "ForEach-daily",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.pBackfillList",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Get_Daily_ENTSOE",
+							"type": "WebActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"method": "GET",
+								"headers": {
+									"Accept": "application/xml"
+								},
+								"url": {
+									"value": "https://web-api.tp.entsoe.eu/api?securityToken=d62beab7-0eb5-4da4-8854-40313af924aa&documentType=A44&in_Domain=@{item().ZoneCode}&out_Domain=@{item().ZoneCode}&periodStart=@{formatDateTime(utcnow(), 'yyyyMMdd0000')}&periodEnd=@{formatDateTime(addDays(utcnow(), 1), 'yyyyMMdd0000')}",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Save_Daily_To_Blob",
+							"type": "WebActivity",
+							"dependsOn": [
+								{
+									"activity": "Get_Daily_ENTSOE",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"method": "PUT",
+								"headers": {
+									"x-ms-blob-type": "BlockBlob",
+									"Content-Type": "application/xml",
+									"x-ms-version": "2020-10-02"
+								},
+								"url": {
+									"value": "https://elswedenpriceproject.blob.core.windows.net/entsoe-raw/entsoe/day_ahead/@{item().ZoneName}/@{formatDateTime(utcnow(), 'yyyy')}/@{item().ZoneName}_@{formatDateTime(utcnow(), 'yyyyMMdd')}.xml",
+									"type": "Expression"
+								},
+								"body": {
+									"value": "@activity('Get_Daily_ENTSOE').output",
+									"type": "Expression"
+								},
+								"authentication": {
+									"type": "MSI",
+									"resource": "https://storage.azure.com"
+								}
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"pBackfillList": {
+				"type": "array",
+				"defaultValue": [
+					{
+						"ZoneCode": "10Y1001A1001A44P",
+						"ZoneName": "SE1"
+					},
+					{
+						"ZoneCode": "10Y1001A1001A45N",
+						"ZoneName": "SE2"
+					},
+					{
+						"ZoneCode": "10Y1001A1001A46L",
+						"ZoneName": "SE3"
+					},
+					{
+						"ZoneCode": "10Y1001A1001A47J",
+						"ZoneName": "SE4"
+					}
+				]
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-09-16T16:12:03Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

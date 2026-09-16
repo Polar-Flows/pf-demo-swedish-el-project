@@ -1,0 +1,24 @@
+{
+	"name": "DS_Blob_SCB",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_blob_storage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@concat('scb_elavtal_', formatDateTime(utcnow(), 'yyyyMM'), '.json')",
+					"type": "Expression"
+				},
+				"folderPath": "electricity_contracts/monthly",
+				"container": "scb-el"
+			}
+		},
+		"schema": {}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
