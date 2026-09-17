@@ -1,0 +1,24 @@
+{
+	"name": "DS_Blob_SMHI_Forecast",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_blob_storage",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"Zone": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "@concat('snow1g_', dataset().Zone, '_', formatDateTime(utcnow(), 'yyyyMMdd_HH'), '.json')",
+				"folderPath": "@concat('forecast/snow1g/', dataset().Zone, '/', formatDateTime(utcnow(), 'yyyy'))",
+				"container": "smhi"
+			}
+		}
+	}
+}

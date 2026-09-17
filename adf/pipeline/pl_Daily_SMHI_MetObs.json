@@ -1,0 +1,84 @@
+{
+	"name": "pl_Daily_SMHI_MetObs",
+	"properties": {
+		"activities": [
+			{
+				"name": "ForEach_MetObs_Daily",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@json('[\n  {\"Zone\": \"SE1\", \"Station\": \"162860\", \"Param\": \"1\", \"ParamName\": \"Temperature\"},\n  {\"Zone\": \"SE1\", \"Station\": \"162860\", \"Param\": \"4\", \"ParamName\": \"WindSpeed\"},\n  {\"Zone\": \"SE2\", \"Station\": \"127380\", \"Param\": \"1\", \"ParamName\": \"Temperature\"},\n  {\"Zone\": \"SE2\", \"Station\": \"127380\", \"Param\": \"4\", \"ParamName\": \"WindSpeed\"},\n  {\"Zone\": \"SE3\", \"Station\": \"97200\", \"Param\": \"1\", \"ParamName\": \"Temperature\"},\n  {\"Zone\": \"SE3\", \"Station\": \"97200\", \"Param\": \"4\", \"ParamName\": \"WindSpeed\"},\n  {\"Zone\": \"SE4\", \"Station\": \"53430\", \"Param\": \"1\", \"ParamName\": \"Temperature\"},\n  {\"Zone\": \"SE4\", \"Station\": \"53430\", \"Param\": \"4\", \"ParamName\": \"WindSpeed\"}\n]')",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy_MetObs_Daily_JSON",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "BinarySource",
+									"storeSettings": {
+										"type": "HttpReadSettings",
+										"requestMethod": "GET"
+									},
+									"formatSettings": {
+										"type": "BinaryReadSettings"
+									}
+								},
+								"sink": {
+									"type": "BinarySink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "DS_HTTP_SMHI_MetObs",
+									"type": "DatasetReference",
+									"parameters": {
+										"Param": "@item().Param",
+										"Station": "@item().Station",
+										"Period": "@pipeline().parameters.Period"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_Blob_SMHI_MetObs",
+									"type": "DatasetReference",
+									"parameters": {
+										"Zone": "@item().Zone",
+										"Param": "@item().Param",
+										"ParamName": "@item().ParamName",
+										"Station": "@item().Station",
+										"Period": "@pipeline().parameters.Period"
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"Period": {
+				"type": "string",
+				"defaultValue": "latest-day"
+			}
+		},
+		"annotations": []
+	}
+}

@@ -1,0 +1,28 @@
+{
+	"name": "DS_HTTP_SMHI_MetObs",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_HTTP_SMHI_METOBS",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"Param": {
+				"type": "string"
+			},
+			"Station": {
+				"type": "string"
+			},
+			"Period": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation",
+				"relativeUrl": "@concat('api/version/1.0/parameter/', dataset().Param, '/station/', dataset().Station, '/period/', dataset().Period, '/data.json')"
+			}
+		}
+	}
+}
