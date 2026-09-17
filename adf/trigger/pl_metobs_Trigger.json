@@ -8,6 +8,9 @@
 				"pipelineReference": {
 					"referenceName": "pl_Daily_SMHI_MetObs",
 					"type": "PipelineReference"
+				},
+				"parameters": {
+					"Period": "latest-day"
 				}
 			}
 		],
