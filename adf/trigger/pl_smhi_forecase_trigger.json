@@ -1,0 +1,24 @@
+{
+	"name": "pl_smhi_forecase_trigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "pl_SNOW1g_Forecast",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Hour",
+				"interval": 12,
+				"startTime": "2026-09-17T16:00:00",
+				"timeZone": "W. Europe Standard Time"
+			}
+		}
+	}
+}
