@@ -1,0 +1,12 @@
+{
+	"name": "LS_HTTP_SMHI_FCST",
+	"properties": {
+		"annotations": [],
+		"type": "HttpServer",
+		"typeProperties": {
+			"url": "https://opendata-download-metfcst.smhi.se/",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}
