@@ -2,7 +2,7 @@
 	"name": "pl_smhi_forecase_trigger",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Stopped",
+		"runtimeState": "Started",
 		"pipelines": [
 			{
 				"pipelineReference": {
@@ -16,7 +16,7 @@
 			"recurrence": {
 				"frequency": "Hour",
 				"interval": 12,
-				"startTime": "2026-09-17T16:00:00",
+				"startTime": "2026-09-21T16:00:00",
 				"timeZone": "W. Europe Standard Time"
 			}
 		}
