@@ -1,0 +1,30 @@
+{
+	"name": "ds_ecb_json_source",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_ecb_api",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"StartPeriod": {
+				"type": "string"
+			},
+			"EndPeriod": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation",
+				"relativeUrl": {
+					"value": "service/data/EXR/D.SEK.EUR.SP00.A?startPeriod=@{dataset().StartPeriod}&endPeriod=@{dataset().EndPeriod}&format=jsondata",
+					"type": "Expression"
+				}
+			}
+		},
+		"schema": {}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

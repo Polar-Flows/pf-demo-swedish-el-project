@@ -1,0 +1,64 @@
+{
+	"name": "pl_ecb_historical",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "HttpReadSettings",
+							"requestMethod": "GET"
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_ecb_json_source",
+						"type": "DatasetReference",
+						"parameters": {
+							"StartPeriod": "2022-01-01",
+							"EndPeriod": "@formatDateTime(utcNow(), 'yyyy-MM-dd')"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_ecb_json_sink_history",
+						"type": "DatasetReference",
+						"parameters": {
+							"FileName": "historical_2022_present"
+						}
+					}
+				]
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2026-10-09T16:42:44Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

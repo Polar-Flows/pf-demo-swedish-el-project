@@ -1,0 +1,71 @@
+{
+	"name": "ds_entsoe_json_sink_daily",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_storage_account",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"ZoneName": {
+				"type": "string"
+			},
+			"FileName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "entsoe-daily",
+				"fileSystem": "landing"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"uuAppErrorMap": {
+					"type": "object"
+				},
+				"queryDataDto": {
+					"type": "object",
+					"properties": {
+						"uuAppErrorMap": {
+							"type": "object"
+						},
+						"instancePageInfo": {
+							"type": "object",
+							"properties": {
+								"pageSize": {
+									"type": "integer"
+								},
+								"total": {
+									"type": "integer"
+								},
+								"pageIndex": {
+									"type": "integer"
+								}
+							}
+						},
+						"dataItemExchangeList": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"dataItemCode": {
+										"type": "string"
+									},
+									"data": {
+										"type": "array"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

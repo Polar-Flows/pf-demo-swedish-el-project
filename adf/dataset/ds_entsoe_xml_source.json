@@ -1,0 +1,34 @@
+{
+	"name": "ds_entsoe_xml_source",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_ENTSOE_API",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"EIC": {
+				"type": "string"
+			},
+			"StartPeriod": {
+				"type": "string"
+			},
+			"EndPeriod": {
+				"type": "string"
+			},
+			"ApiToken": {
+				"type": "string",
+				"defaultValue": "13459084-c1cd-47c8-8c5a-d1c36447eccf"
+			}
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": {
+				"value": "api?securityToken=@{dataset().ApiToken}&documentType=A44&in_Domain=@{dataset().EIC}&out_Domain=@{dataset().EIC}&periodStart=@{dataset().StartPeriod}&periodEnd=@{dataset().EndPeriod}",
+				"type": "Expression"
+			}
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

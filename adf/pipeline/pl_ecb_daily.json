@@ -1,0 +1,64 @@
+{
+	"name": "pl_ecb_daily",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy_Daily_EUR_SEK",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "HttpReadSettings",
+							"requestMethod": "GET"
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_ecb_json_source",
+						"type": "DatasetReference",
+						"parameters": {
+							"StartPeriod": "@formatDateTime(addDays(utcNow(), -7), 'yyyy-MM-dd')",
+							"EndPeriod": "@formatDateTime(utcNow(), 'yyyy-MM-dd')"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_ecb_json_sink_daily",
+						"type": "DatasetReference",
+						"parameters": {
+							"FileName": "@concat('daily_', formatDateTime(utcNow(), 'yyyyMMdd'))"
+						}
+					}
+				]
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2026-10-09T16:42:44Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

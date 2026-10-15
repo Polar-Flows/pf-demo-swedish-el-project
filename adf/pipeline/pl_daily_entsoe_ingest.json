@@ -1,0 +1,107 @@
+{
+	"name": "pl_daily_entsoe_ingest",
+	"properties": {
+		"activities": [
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@variables('ZoneList')",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Copy_Daily_Prices",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET",
+									"paginationRules": {
+										"supportRFC5988": "true"
+									}
+								},
+								"sink": {
+									"type": "JsonSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "JsonWriteSettings"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_entsoe_xml_source",
+									"type": "DatasetReference",
+									"parameters": {
+										"EIC": "@item().eic",
+										"StartPeriod": "@formatDateTime(addDays(utcNow(), -1), 'yyyyMMdd0000')",
+										"EndPeriod": {
+											"value": "@formatDateTime(utcNow(), 'yyyyMMdd2300')",
+											"type": "Expression"
+										},
+										"ApiToken": "13459084-c1cd-47c8-8c5a-d1c36447eccf"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_entsoe_json_sink_daily",
+									"type": "DatasetReference",
+									"parameters": {
+										"ZoneName": "@item().name",
+										"FileName": "@concat('daily_', formatDateTime(utcNow(), 'yyyyMMdd'))"
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"variables": {
+			"ZoneList": {
+				"type": "Array",
+				"defaultValue": [
+					{
+						"name": "SE1",
+						"eic": "10Y1001A1001A44P"
+					},
+					{
+						"name": "SE2",
+						"eic": "10Y1001A1001A45N"
+					},
+					{
+						"name": "SE3",
+						"eic": "10Y1001A1001A46L"
+					},
+					{
+						"name": "SE4",
+						"eic": "10Y1001A1001A47J"
+					}
+				]
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-10-09T08:50:50Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

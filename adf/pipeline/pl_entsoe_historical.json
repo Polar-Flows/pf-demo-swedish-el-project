@@ -1,0 +1,203 @@
+{
+	"name": "pl_entsoe_historical",
+	"properties": {
+		"activities": [
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@variables('HistoricalTasks')",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "copy_history",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET",
+									"paginationRules": {
+										"supportRFC5988": "true"
+									}
+								},
+								"sink": {
+									"type": "JsonSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "JsonWriteSettings"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_entsoe_xml_source",
+									"type": "DatasetReference",
+									"parameters": {
+										"EIC": {
+											"value": "@item().eic",
+											"type": "Expression"
+										},
+										"StartPeriod": {
+											"value": "@concat(item().year, '01010000')",
+											"type": "Expression"
+										},
+										"EndPeriod": {
+											"value": "@if(equals(item().year, '2026'), formatDateTime(utcNow(), 'yyyyMMdd2300'), concat(item().year, '12312300'))",
+											"type": "Expression"
+										},
+										"ApiToken": "13459084-c1cd-47c8-8c5a-d1c36447eccf"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_entsoe_json_sink_history",
+									"type": "DatasetReference",
+									"parameters": {
+										"ZoneName": {
+											"value": "@item()",
+											"type": "Expression"
+										},
+										"FileName": {
+											"value": "@concat('historical_', item().year)",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"variables": {
+			"HistoricalTasks": {
+				"type": "Array",
+				"defaultValue": [
+					{
+						"zone": "SE1",
+						"eic": "10Y1001A1001A44P",
+						"year": "2022"
+					},
+					{
+						"zone": "SE1",
+						"eic": "10Y1001A1001A44P",
+						"year": "2023"
+					},
+					{
+						"zone": "SE1",
+						"eic": "10Y1001A1001A44P",
+						"year": "2024"
+					},
+					{
+						"zone": "SE1",
+						"eic": "10Y1001A1001A44P",
+						"year": "2025"
+					},
+					{
+						"zone": "SE1",
+						"eic": "10Y1001A1001A44P",
+						"year": "2026"
+					},
+					{
+						"zone": "SE2",
+						"eic": "10Y1001A1001A45N",
+						"year": "2022"
+					},
+					{
+						"zone": "SE2",
+						"eic": "10Y1001A1001A45N",
+						"year": "2023"
+					},
+					{
+						"zone": "SE2",
+						"eic": "10Y1001A1001A45N",
+						"year": "2024"
+					},
+					{
+						"zone": "SE2",
+						"eic": "10Y1001A1001A45N",
+						"year": "2025"
+					},
+					{
+						"zone": "SE2",
+						"eic": "10Y1001A1001A45N",
+						"year": "2026"
+					},
+					{
+						"zone": "SE3",
+						"eic": "10Y1001A1001A46L",
+						"year": "2022"
+					},
+					{
+						"zone": "SE3",
+						"eic": "10Y1001A1001A46L",
+						"year": "2023"
+					},
+					{
+						"zone": "SE3",
+						"eic": "10Y1001A1001A46L",
+						"year": "2024"
+					},
+					{
+						"zone": "SE3",
+						"eic": "10Y1001A1001A46L",
+						"year": "2025"
+					},
+					{
+						"zone": "SE3",
+						"eic": "10Y1001A1001A46L",
+						"year": "2026"
+					},
+					{
+						"zone": "SE4",
+						"eic": "10Y1001A1001A47J",
+						"year": "2022"
+					},
+					{
+						"zone": "SE4",
+						"eic": "10Y1001A1001A47J",
+						"year": "2023"
+					},
+					{
+						"zone": "SE4",
+						"eic": "10Y1001A1001A47J",
+						"year": "2024"
+					},
+					{
+						"zone": "SE4",
+						"eic": "10Y1001A1001A47J",
+						"year": "2025"
+					},
+					{
+						"zone": "SE4",
+						"eic": "10Y1001A1001A47J",
+						"year": "2026"
+					}
+				]
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-10-09T12:38:24Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

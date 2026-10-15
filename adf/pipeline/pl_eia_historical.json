@@ -1,0 +1,65 @@
+{
+	"name": "pl_eia_historical",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy_EIA_Historical",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "HttpReadSettings",
+							"requestMethod": "GET"
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_eia_json_source",
+						"type": "DatasetReference",
+						"parameters": {
+							"StartPeriod": "2022-01-01",
+							"EndPeriod": "@formatDateTime(utcNow(), 'yyyy-MM-dd')",
+							"ApiKey": "0Viq9dqZq8K54uHDyGfAq05vm9BhHOkh2PPUZ6ps"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_eia_json_sink_historical",
+						"type": "DatasetReference",
+						"parameters": {
+							"FileName": "historical_2022_present"
+						}
+					}
+				]
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2026-10-09T17:34:17Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

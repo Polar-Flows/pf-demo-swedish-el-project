@@ -1,0 +1,992 @@
+{
+	"name": "ds_eia_json_sink_historical",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_storage_account",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"FileName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@{concat(dataset().FileName, '.json')}",
+					"type": "Expression"
+				},
+				"folderPath": "eia-historical",
+				"fileSystem": "landing"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"header": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"test": {
+							"type": "boolean"
+						},
+						"prepared": {
+							"type": "string"
+						},
+						"sender": {
+							"type": "object",
+							"properties": {
+								"id": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"dataSets": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"action": {
+								"type": "string"
+							},
+							"validFrom": {
+								"type": "string"
+							},
+							"series": {
+								"type": "object",
+								"properties": {
+									"0:0:0:0:0": {
+										"type": "object",
+										"properties": {
+											"attributes": {
+												"type": "array",
+												"items": {
+													"type": "integer"
+												}
+											},
+											"observations": {
+												"type": "object",
+												"properties": {
+													"0": {
+														"type": "array",
+														"items": {
+															"type": "number"
+														}
+													},
+													"1": {
+														"type": "array",
+														"items": {
+															"type": "number"
+														}
+													},
+													"2": {
+														"type": "array",
+														"items": {
+															"type": "number"
+														}
+													},
+													"3": {
+														"type": "array",
+														"items": {
+															"type": "number"
+														}
+													},
+													"4": {
+														"type": "array",
+														"items": {
+															"type": "number"
+														}
+													},
+													"5": {
+														"type": "array",
+														"items": {
+															"type": "number"
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"structure": {
+					"type": "object",
+					"properties": {
+						"links": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"title": {
+										"type": "string"
+									},
+									"rel": {
+										"type": "string"
+									},
+									"href": {
+										"type": "string"
+									}
+								}
+							}
+						},
+						"name": {
+							"type": "string"
+						},
+						"dimensions": {
+							"type": "object",
+							"properties": {
+								"series": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"id": {
+												"type": "string"
+											},
+											"name": {
+												"type": "string"
+											},
+											"values": {
+												"type": "array",
+												"items": {
+													"type": "object",
+													"properties": {
+														"id": {
+															"type": "string"
+														},
+														"name": {
+															"type": "string"
+														}
+													}
+												}
+											}
+										}
+									}
+								},
+								"observation": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"id": {
+												"type": "string"
+											},
+											"name": {
+												"type": "string"
+											},
+											"role": {
+												"type": "string"
+											},
+											"values": {
+												"type": "array",
+												"items": {
+													"type": "object",
+													"properties": {
+														"id": {
+															"type": "string"
+														},
+														"name": {
+															"type": "string"
+														},
+														"start": {
+															"type": "string"
+														},
+														"end": {
+															"type": "string"
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"attributes": {
+							"type": "object",
+							"properties": {
+								"series": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"id": {
+												"type": "string"
+											},
+											"name": {
+												"type": "string"
+											},
+											"values": {
+												"type": "array",
+												"items": {
+													"type": "object",
+													"properties": {
+														"name": {
+															"type": "string"
+														}
+													}
+												}
+											}
+										}
+									}
+								},
+								"observation": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"id": {
+												"type": "string"
+											},
+											"name": {
+												"type": "string"
+											},
+											"values": {
+												"type": "array",
+												"items": {
+													"type": "object",
+													"properties": {
+														"id": {
+															"type": "string"
+														},
+														"name": {
+															"type": "string"
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"uuAppErrorMap": {
+					"type": "object"
+				},
+				"queryDataDto": {
+					"type": "object",
+					"properties": {
+						"uuAppErrorMap": {
+							"type": "object"
+						},
+						"instancePageInfo": {
+							"type": "object",
+							"properties": {
+								"pageSize": {
+									"type": "integer"
+								},
+								"total": {
+									"type": "integer"
+								},
+								"pageIndex": {
+									"type": "integer"
+								}
+							}
+						},
+						"dataItemExchangeList": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"dataItemCode": {
+										"type": "string"
+									},
+									"data": {
+										"type": "array",
+										"items": {
+											"type": "object",
+											"properties": {
+												"timeInterval": {
+													"type": "object",
+													"properties": {
+														"from": {
+															"type": "string"
+														},
+														"to": {
+															"type": "string"
+														}
+													}
+												},
+												"businessDimensionMap": {
+													"type": "object",
+													"properties": {
+														"CONTRACT_TYPE": {
+															"type": "string"
+														},
+														"CLASSIFICATION_SEQUENCE": {
+															"type": "string"
+														},
+														"OUT_AREA": {
+															"type": "string"
+														},
+														"IN_AREA": {
+															"type": "string"
+														}
+													}
+												},
+												"instanceAttributeMap": {
+													"type": "object",
+													"properties": {
+														"CURRENCY": {
+															"type": "string"
+														},
+														"DATA_PROVIDER_ORGANIZATION": {
+															"type": "string"
+														}
+													}
+												},
+												"curveData": {
+													"type": "object",
+													"properties": {
+														"curveType": {
+															"type": "string"
+														},
+														"pointAttributeVariabilityMap": {
+															"type": "object",
+															"properties": {
+																"ENERGY_PRICES": {
+																	"type": "boolean"
+																}
+															}
+														},
+														"periodList": {
+															"type": "array",
+															"items": {
+																"type": "object",
+																"properties": {
+																	"timeInterval": {
+																		"type": "object",
+																		"properties": {
+																			"from": {
+																				"type": "string"
+																			},
+																			"to": {
+																				"type": "string"
+																			}
+																		}
+																	},
+																	"resolution": {
+																		"type": "string"
+																	},
+																	"pointMap": {
+																		"type": "object",
+																		"properties": {
+																			"0": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"1": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"2": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"3": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"4": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"5": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"6": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"7": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"8": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"9": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"10": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"11": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"12": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"13": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"14": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"15": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"16": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"17": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"18": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"19": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"20": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"21": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"22": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"23": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"24": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"25": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"26": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"27": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"28": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"29": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"30": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"31": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"32": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"33": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"34": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"35": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"36": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"37": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"38": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"39": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"40": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"41": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"42": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"43": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"44": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"45": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"46": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"47": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"48": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"49": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"50": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"51": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"53": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"54": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"55": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"56": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"57": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"58": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"59": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"60": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"61": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"62": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"63": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"64": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"65": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"66": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"67": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"68": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"69": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"70": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"71": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"72": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"73": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"74": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"75": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"76": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"77": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"78": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"79": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"80": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"81": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"82": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"83": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"84": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"85": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"86": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"87": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"88": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"89": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"90": {
+																				"type": "array",
+																				"items": {
+																					"type": "integer"
+																				}
+																			},
+																			"91": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"92": {
+																				"type": "array",
+																				"items": {
+																					"type": "integer"
+																				}
+																			},
+																			"93": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"94": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			},
+																			"95": {
+																				"type": "array",
+																				"items": {
+																					"type": "number"
+																				}
+																			}
+																		}
+																	}
+																}
+															}
+														},
+														"curvePageInfo": {
+															"type": "object",
+															"properties": {
+																"pageIndex": {
+																	"type": "integer"
+																},
+																"pageSize": {
+																	"type": "integer"
+																},
+																"total": {
+																	"type": "integer"
+																},
+																"totalSize": {
+																	"type": "integer"
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

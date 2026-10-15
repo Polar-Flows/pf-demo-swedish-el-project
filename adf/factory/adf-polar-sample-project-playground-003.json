@@ -1,0 +1,15 @@
+{
+	"name": "adf-polar-sample-project-playground-003",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "westeurope",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "f4a848aa-8ad9-4488-a987-dcfc417a644b",
+		"tenantId": "4a6d4bca-b218-44cb-9f2c-3f14b499f6e7"
+	}
+}
