@@ -1,0 +1,21 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf-polar-sample-project-playground-003"
+		},
+		"LS_ENTSOE_API_properties_typeProperties_url": {
+			"value": "https://web-api.tp.entsoe.eu"
+		},
+		"ls_ecb_api_properties_typeProperties_url": {
+			"value": "https://data-api.ecb.europa.eu/"
+		},
+		"ls_eia_api_properties_typeProperties_url": {
+			"value": "https://api.eia.gov"
+		},
+		"ls_storage_account_properties_typeProperties_url": {
+			"value": "https://stsampleplayground003.dfs.core.windows.net/"
+		}
+	}
+}

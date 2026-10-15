@@ -1,0 +1,90 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adf-polar-sample-project-playground-003"
+		},
+		"LS_ENTSOE_API_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://web-api.tp.entsoe.eu"
+		},
+		"ls_ecb_api_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://data-api.ecb.europa.eu/"
+		},
+		"ls_eia_api_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://api.eia.gov"
+		},
+		"ls_storage_account_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://stsampleplayground003.dfs.core.windows.net/"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "adf-polar-sample-project-playground-003_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"LS_ENTSOE_API_properties_typeProperties_url": {
+						"value": "[parameters('LS_ENTSOE_API_properties_typeProperties_url')]"
+					},
+					"ls_ecb_api_properties_typeProperties_url": {
+						"value": "[parameters('ls_ecb_api_properties_typeProperties_url')]"
+					},
+					"ls_eia_api_properties_typeProperties_url": {
+						"value": "[parameters('ls_eia_api_properties_typeProperties_url')]"
+					},
+					"ls_storage_account_properties_typeProperties_url": {
+						"value": "[parameters('ls_storage_account_properties_typeProperties_url')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "adf-polar-sample-project-playground-003_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adf-polar-sample-project-playground-003_ArmTemplate_0')]"
+			]
+		}
+	]
+}
